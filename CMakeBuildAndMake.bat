@@ -1,7 +1,21 @@
-if exist "build" rmdir /Q /S "build"
-mkdir "build"
-cd build
-cmake -G "MinGW Makefiles" ..
-make
-::xcopy /Y /Q "snake.exe" ".."
-cd ..
+@echo off
+@echo Cleaning...
+@if exist "build" rmdir /Q /S "build" || @echo Cleaning... Error! & @echo Press any key to exit... & @pause > nul & exit \b
+@echo Cleaning... Done!
+@echo Creating build folder...
+@mkdir "build" || @echo Creating build folder... Error! & @echo Press any key to exit... & @pause > nul & exit \b
+@echo Creating build folder... Done!
+@echo Changing current directory...
+@cd build || @echo Changing current directory... Error! & @echo Press any key to exit... & @pause > nul & exit \b
+@echo Changing current directory... Done!
+@echo Running CMake...
+@cmake -G "MinGW Makefiles" .. || @echo Running CMake... Error! & @echo Press any key to exit... & @pause > nul & exit \b
+@echo Running CMake... Done!
+@echo Running Make...
+@make || @echo Running Make... Error! & @echo Press any key to exit... & @pause > nul & exit \b
+@echo Running Make... Done!
+@echo Changing back current directory...
+@cd .. || @echo Changing back current directory... Error! & @echo Press any key to exit... & @pause > nul & exit \b
+@echo Changing back current directory... Done!
+@echo Press any key to exit...
+@pause > nul
