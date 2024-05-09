@@ -1,4 +1,11 @@
-cd build
-make
-cd ..
-pause
+@echo Changing current directory...
+@cd build || @echo Changing current directory... Error! & @echo Press any key to exit... & @pause > nul & exit \b
+@echo Changing current directory... Done!
+@echo Running Make...
+@make || @echo Running Make... Error! & @echo Press any key to exit... & @pause > nul & exit \b
+@echo Running Make... Done!
+@echo Changing back current directory...
+@cd .. || @echo Changing back current directory... Error! & @echo Press any key to exit... & @pause > nul & exit \b
+@echo Changing back current directory... Done!
+@echo Press any key to exit...
+@pause > nul

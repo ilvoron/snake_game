@@ -1,10 +1,9 @@
 ﻿#include "controller.h"
-#include <stdio.h>
+#include <windows.h>
 
 int main()
 {
-	while (1) {
-		loadGame();
-	}
+	LoadGame();
+	system("pause");
 	return 0;
 }

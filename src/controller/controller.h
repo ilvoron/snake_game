@@ -1,3 +1,4 @@
 #pragma once
+#include "interface.h"
 
-void loadGame();
+void LoadGame();
