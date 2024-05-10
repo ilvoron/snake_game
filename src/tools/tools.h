@@ -5,18 +5,27 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-typedef struct {
+typedef struct String {
 	wchar_t* self;
 	size_t length;
 } String;
 
-typedef struct {
-	bool isInit;
+typedef struct KeyValue {
 	String key;
 	String value;
-	size_t length;
+	String section;
 } KeyValue;
 
-void ReadIniFile(KeyValue* keyValues, String* filePath);
-void KeyValueNew(KeyValue* keyValue);
+typedef struct KeyValues {
+	KeyValue* self;
+	size_t length;
+} KeyValues;
+
+void ReadIniFile(KeyValues* keyValues, String* filePath);
+void KeyValuesNew(KeyValues* keyValues);
+void KeyValuesDelete(KeyValues* keyValues);
 void StringNew(String* string, const wchar_t* self);
+void StringSet(String* string, const wchar_t* self);
+void StringDelete(String* string);
+void StringConcatWChar(String* string, const wchar_t wchar);
+void StringRemoveWChar(String* string, size_t position);

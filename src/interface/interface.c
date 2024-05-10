@@ -1,9 +1,15 @@
 #include "interface.h"
 
+KeyValues settings;
+
 void InitInterface() {
-	KeyValue keyValues;
-	KeyValueNew(&keyValues);
+	KeyValuesNew(&settings);
 	String filePath;
 	StringNew(&filePath, settingsIniFile);
-	ReadIniFile(&keyValues, &filePath);
+	ReadIniFile(&settings, &filePath);
+	StringDelete(&filePath);
+}
+
+void CloseInterface() {
+	KeyValuesDelete(&settings);
 }

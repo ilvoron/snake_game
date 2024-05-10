@@ -2,3 +2,4 @@
 #include "interface.h"
 
 void LoadGame();
+void UnloadGame();

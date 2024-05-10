@@ -4,6 +4,7 @@
 int main()
 {
 	LoadGame();
+	UnloadGame();
 	system("pause");
 	return 0;
 }

@@ -3,3 +3,4 @@
 #include "paths.h"
 
 void InitInterface();
+void CloseInterface();

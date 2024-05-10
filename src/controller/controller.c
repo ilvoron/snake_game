@@ -3,3 +3,7 @@
 void LoadGame() {
 	InitInterface();
 }
+
+void UnloadGame() {
+	CloseInterface();
+}
