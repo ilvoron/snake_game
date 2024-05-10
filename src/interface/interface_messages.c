@@ -1,33 +1,35 @@
 #include "interface_messages.h"
 
-void ThrowError(ERROR_CODE error, const char* errorLabel) {
-	size_t errorMessageLength = snprintf(NULL, 0, "[%d] ", error) + strlen(ERROR_LABELS[error]) + strlen(errorLabel) + 7; // one for terminator char, 2 for scopes and 1 for space (new line), 3 for dots
+// private
 
-	char* errorMessageConsole = (char*)malloc(sizeof(char) * errorMessageLength);
-	char* errorMessageMessageBox = (char*)malloc(sizeof(char) * errorMessageLength);
+static void ThrowFallbackError(ERROR_CODE error, char* errorLabel) {
+	fprintf(stderr, "Error while running ThrowError()... Data without args for format string:\n[error] %d\n[errorLabel] %s", error, errorLabel);
+	exit(EXIT_FAILURE);
+}
 
-	errorMessageConsole[0] = '\0';
-	errorMessageMessageBox[0] = '\0';
+// public
 
-	snprintf(errorMessageConsole, errorMessageLength, "[%d] ", error);
-	snprintf(errorMessageMessageBox, errorMessageLength, "[%d] ", error);
+void ThrowError(ERROR_CODE error, char* errorLabel, ...) {
+	va_list errorLabelArgs, errorLabelArgsCopy;
+	va_start(errorLabelArgs, errorLabel);
+	va_copy(errorLabelArgsCopy, errorLabelArgs);
+	size_t errorLabelLength = (size_t)vsnprintf(NULL, 0, errorLabel, errorLabelArgs) + 1; // one for string terminator
+	va_end(errorLabelArgs);
+	char* errorLabelCopy = (char*)malloc(sizeof(char) * errorLabelLength);
+	if (errorLabelCopy == NULL) { ThrowFallbackError(error, errorLabel); }
+	vsnprintf(errorLabelCopy, errorLabelLength, errorLabel, errorLabelArgsCopy);
+	errorLabel = errorLabelCopy;
+	errorLabelCopy = NULL;
 
-	strcat(errorMessageConsole, ERROR_LABELS[error]);
-	strcat(errorMessageMessageBox, ERROR_LABELS[error]);
+	char* errorMessageFormat = "[%d] %s...%c(%s)"; // error code, error message, separator (space or new line), error label
+	size_t errorMessageLength = (size_t)snprintf(NULL, 0, errorMessageFormat, error, ERROR_LABELS[error], '\n', errorLabel) + 1; // one for string terminator
+	char* errorMessageMsgBox = (char*)malloc(sizeof(char) * errorMessageLength); // one for terminator string
+	if (errorMessageMsgBox == NULL) { ThrowFallbackError(error, errorLabel); }
+	snprintf(errorMessageMsgBox, errorMessageLength, errorMessageFormat, error, ERROR_LABELS[error], '\n', errorLabel);
 
-	strcat(errorMessageConsole, "... (");
-	strcat(errorMessageMessageBox, "...\n(");
-
-	strcat(errorMessageConsole, errorLabel);
-	strcat(errorMessageMessageBox, errorLabel);
-
-	strcat(errorMessageConsole, ")");
-	strcat(errorMessageMessageBox, ")");
-
-	fprintf(stderr, errorMessageConsole);
-	MessageBox(NULL, errorMessageMessageBox, "Error", MB_ICONERROR | MB_OK);
+	fprintf(stderr, errorMessageFormat, error, ERROR_LABELS[error], ' ', errorLabel);
+	MessageBox(NULL, errorMessageMsgBox, "Error", MB_ICONERROR | MB_OK);
 	exit(EXIT_FAILURE);
 
-	free(errorMessageConsole);
-	free(errorMessageMessageBox);
+	free(errorMessageMsgBox);
 }

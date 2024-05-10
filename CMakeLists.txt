@@ -8,7 +8,7 @@ project ("SnakeGameC")
 set (SOURCES_PATH "src")
 set (RESOURCES_FILE "src/resources/snake.rc")
 set (MAIN_FILE "src/main.c")
-set (SETTINGS_FILE "src/settings.ini")
+set (SETTINGS_FILE "src/config.ini")
 #set (CMAKE_MESSAGE_LOG_LEVEL DEBUG)
 
 # -----------------------------------------------------------

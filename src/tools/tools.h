@@ -7,7 +7,9 @@
 
 typedef struct String {
 	wchar_t* self;
+	char* selfBytes;
 	size_t length;
+	size_t lengthBytes;
 } String;
 
 typedef struct KeyValue {
